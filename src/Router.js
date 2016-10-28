@@ -15,7 +15,7 @@ import NavigationExperimental from 'react-native-experimental-navigation';
 
 import Actions, { ActionMap } from './Actions';
 import getInitialState from './State';
-import Reducer, { findElement } from './Reducer';
+import Reducer, { findElement, getStackSize } from './Reducer';
 import DefaultRenderer from './DefaultRenderer';
 import Scene from './Scene';
 import * as ActionConst from './ActionConst';
@@ -160,6 +160,11 @@ class Router extends Component {
     );
   }
 }
+
+Router.getStackSize = () => {
+  return getStackSize;
+};
+
 
 Router.propTypes = propTypes;
 

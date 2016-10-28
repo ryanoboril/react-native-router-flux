@@ -15,6 +15,8 @@ import { assert } from './Util';
 import { getInitialState } from './State';
 import { Platform } from 'react-native';
 
+var stackSize;  // stack size must be stored somewhere
+
 // WARN: it is not working correct. rewrite it.
 function checkPropertiesEqual(action, lastAction) {
   let isEqual = true;
@@ -81,6 +83,8 @@ function inject(state, action, props, scenes) {
     case ActionConst.POP_TO: {
       const targetIndex = action.targetIndex;
 
+      stackSize = state.children.length;
+
       return {
         ...state,
         index: targetIndex,
@@ -114,6 +118,8 @@ function inject(state, action, props, scenes) {
           "it must be smaller than scenes stack's length.");
       }
 
+      stackSize = state.children.length;
+
       return {
         ...state,
         index: state.index - popNum,
@@ -139,6 +145,8 @@ function inject(state, action, props, scenes) {
           'The data is the number of scenes you want to pop, ' +
           "it must be smaller than scenes stack's length.");
       }
+
+      stackSize = state.children.length;
 
       state = {
         ...state,
@@ -250,6 +258,11 @@ function inject(state, action, props, scenes) {
       return state;
   }
 }
+
+export function getStackSize() {
+  return stackSize;
+}
+
 
 export function findElement(state, key, type) {
   if ((ActionMap[type] === ActionConst.REFRESH && state.key === key) || state.sceneKey === key) {
